@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const navigationLinks = [
@@ -21,13 +22,14 @@ export default function Navbar() {
           aria-label="Boarvest homepage"
           className="flex shrink-0 items-center gap-3"
         >
-          {/* Temporary logo placeholder */}
-          <span
-            aria-hidden="true"
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/10 text-xl font-bold text-emerald-300"
-          >
-            B
-          </span>
+          <Image
+            src="/image/boarvest-logo.png"
+            alt="Boarvest boar logo"
+            width={44}
+            height={44}
+            priority
+            className="h-10 w-10 shrink-0 object-contain"
+          />
 
           <span className="text-xl font-bold tracking-tight text-white">
             Boar<span className="text-emerald-400">vest</span>

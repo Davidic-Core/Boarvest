@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import AboutSection from "@/components/landing/AboutSection";
@@ -8,19 +9,34 @@ const steps = [
     number: "01",
     title: "Create Your Account",
     description:
-      "Get started when Boarvest account registration becomes available.",
+      "Account registration will become available when Boarvest's authentication system is implemented.",
   },
   {
     number: "02",
     title: "Explore Your Dashboard",
     description:
-      "Discover the portfolio tools, account information, and market features available on the platform.",
+      "Discover the portfolio tools, account information, and market features planned for the Boarvest platform.",
   },
   {
     number: "03",
     title: "Monitor Your Activity",
     description:
-      "Follow supported portfolio information and investment activity from one organized interface.",
+      "Review supported portfolio information and account activity when the relevant platform features become available.",
+  },
+];
+
+const marketIndicators = [
+  {
+    title: "Asset Prices",
+    description: "Current prices from a verified market data provider.",
+  },
+  {
+    title: "Market Movements",
+    description: "Price changes calculated from reliable market data.",
+  },
+  {
+    title: "Market Indicators",
+    description: "Additional market information as integrations become available.",
   },
 ];
 
@@ -28,27 +44,32 @@ const faqs = [
   {
     question: "What is Boarvest?",
     answer:
-      "Boarvest is being developed as a digital asset and crypto investment management platform focused on portfolio visibility, market information, and an investor-oriented dashboard.",
+      "Boarvest is being developed as a digital asset and cryptocurrency investment management platform. Its planned features include portfolio visibility, market information, account management, and an investor-focused dashboard.",
   },
   {
     question: "Does Boarvest guarantee investment returns?",
     answer:
-      "No. Cryptocurrency markets are volatile, and investment returns cannot be guaranteed. You could lose some or all of your invested capital.",
+      "No. Cryptocurrency markets are volatile, and investment returns cannot be guaranteed. You could lose some or all of your invested capital. Be cautious of any claim promising guaranteed profits.",
   },
   {
     question: "Does the website display live cryptocurrency prices?",
     answer:
-      "Not yet. Live prices and market indicators will only be presented as current information after a reliable market data provider has been integrated.",
+      "Not currently. Live prices and market indicators will be displayed only after a reliable market data provider has been integrated and the information can be presented accurately.",
   },
   {
     question: "Can I deposit or withdraw cryptocurrency?",
     answer:
-      "Deposit and withdrawal functionality has not been established by this homepage prototype. Do not send funds based solely on information displayed here.",
+      "Deposit and withdrawal functionality has not yet been established by this homepage prototype. Do not send cryptocurrency or money to an address claiming to belong to Boarvest based solely on this website.",
+  },
+  {
+    question: "Can I create a Boarvest account now?",
+    answer:
+      "The public homepage is being developed first. Registration and account access will become available after the necessary authentication and account-management features have been implemented and tested.",
   },
   {
     question: "Is Boarvest financial advice?",
     answer:
-      "No. The information on this website is general product information, not personalized financial or investment advice.",
+      "No. Website content is provided for general informational purposes and is not personalized financial, investment, tax, or legal advice. Make independent decisions and seek qualified professional advice when appropriate.",
   },
 ];
 
@@ -62,7 +83,10 @@ function SectionLabel({
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden">
+    <main
+      id="home"
+      className="min-h-screen overflow-hidden"
+    >
       {/* Navigation */}
       <Navbar />
 
@@ -89,8 +113,10 @@ export default function Home() {
             </h2>
 
             <p className="section-description">
-              Boarvest is being designed to make digital asset management
-              more organized and easier to navigate.
+              Boarvest is being designed to make digital asset
+              management more organized and easier to navigate.
+              The steps below describe the planned experience,
+              not features currently available.
             </p>
           </div>
 
@@ -117,7 +143,10 @@ export default function Home() {
       </section>
 
       {/* Market Overview */}
-      <section id="markets" className="section">
+      <section
+        id="markets"
+        className="section"
+      >
         <div className="container">
           <div className="section-heading">
             <SectionLabel>Market Awareness</SectionLabel>
@@ -127,9 +156,10 @@ export default function Home() {
             </h2>
 
             <p className="section-description">
-              Market information should be clear, timely, and traceable
-              to a reliable source. Live prices and market indicators
-              will appear here only after a data provider is integrated.
+              Market information should be clear, timely, and
+              traceable to reliable sources. Live prices and
+              market indicators will appear here only after
+              a suitable data provider has been integrated.
             </p>
           </div>
 
@@ -141,7 +171,7 @@ export default function Home() {
                 </h3>
 
                 <p className="mt-1 text-xs text-gray-500">
-                  Market data integration pending
+                  Live market data is not connected yet.
                 </p>
               </div>
 
@@ -151,24 +181,23 @@ export default function Home() {
             </div>
 
             <div className="grid gap-px bg-white/[0.06] sm:grid-cols-3">
-              {[
-                "Asset Prices",
-                "Market Movements",
-                "Market Indicators",
-              ].map((item) => (
-                <div key={item} className="bg-[#111a15] p-6">
+              {marketIndicators.map((indicator) => (
+                <article
+                  key={indicator.title}
+                  className="bg-[#111a15] p-6"
+                >
                   <p className="text-sm text-gray-400">
-                    {item}
+                    {indicator.title}
                   </p>
 
                   <p className="mt-3 text-lg font-semibold">
-                    Awaiting Data
+                    Not Available Yet
                   </p>
 
-                  <p className="mt-2 text-xs text-gray-500">
-                    No live data feed connected
+                  <p className="mt-2 text-xs leading-6 text-gray-500">
+                    {indicator.description}
                   </p>
-                </div>
+                </article>
               ))}
             </div>
           </div>
@@ -182,16 +211,21 @@ export default function Home() {
       >
         <div className="container grid gap-12 md:grid-cols-2 md:items-center">
           <div>
-            <SectionLabel>Security and Responsibility</SectionLabel>
+            <SectionLabel>
+              Security and Responsibility
+            </SectionLabel>
 
             <h2 className="section-title">
               Confidence Starts with Transparency.
             </h2>
 
             <p className="section-description">
-              Digital assets require careful decisions. Boarvest should
-              prioritize clear information, responsible disclosures,
-              and protection of user data as the platform develops.
+              Digital assets require careful decisions. Boarvest
+              is being developed with the goal of communicating
+              product capabilities clearly and treating user data
+              responsibly. Security measures must be implemented
+              and tested before they can be claimed as protections
+              offered by the platform.
             </p>
           </div>
 
@@ -210,8 +244,9 @@ export default function Home() {
                 </h3>
 
                 <p className="mt-2 text-sm leading-7 text-gray-400">
-                  Product capabilities and security assurances should
-                  be communicated accurately and supported by evidence.
+                  Product capabilities, fees, and security
+                  information should be communicated accurately
+                  and supported by evidence.
                 </p>
               </div>
             </article>
@@ -231,8 +266,8 @@ export default function Home() {
 
                 <p className="mt-2 text-sm leading-7 text-gray-400">
                   Cryptocurrency values can change significantly.
-                  No investment return is guaranteed, and you may lose
-                  some or all of your invested capital.
+                  No investment return is guaranteed, and you may
+                  lose some or all of your invested capital.
                 </p>
               </div>
             </article>
@@ -241,14 +276,24 @@ export default function Home() {
       </section>
 
       {/* Frequently Asked Questions */}
-      <section id="faq" className="section">
+      <section
+        id="faq"
+        className="section"
+      >
         <div className="container">
           <div className="section-heading">
-            <SectionLabel>Frequently Asked Questions</SectionLabel>
+            <SectionLabel>
+              Frequently Asked Questions
+            </SectionLabel>
 
             <h2 className="section-title">
               Good Questions Deserve Clear Answers.
             </h2>
+
+            <p className="section-description">
+              Learn about the Boarvest vision, planned features,
+              and the current limitations of this website.
+            </p>
           </div>
 
           <div className="mx-auto max-w-3xl space-y-3">
@@ -278,7 +323,10 @@ export default function Home() {
       </section>
 
       {/* Closing Call to Action */}
-      <section className="pb-20 sm:pb-24">
+      <section
+        id="get-started"
+        className="pb-20 sm:pb-24"
+      >
         <div className="container">
           <div className="relative overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-emerald-400/[0.12] via-[#101a14] to-[#11100d] p-7 sm:p-12 lg:p-16">
             <div
@@ -287,20 +335,26 @@ export default function Home() {
             />
 
             <div className="relative z-10 max-w-2xl">
-              <SectionLabel>The Journey Starts Here</SectionLabel>
+              <SectionLabel>
+                The Journey Starts Here
+              </SectionLabel>
 
               <h2 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
                 A Clearer View of Your Digital Asset Journey.
               </h2>
 
               <p className="mt-5 max-w-xl text-sm leading-7 text-gray-400 sm:text-base">
-                Explore the Boarvest vision and follow the development
-                of an investor-focused crypto management experience.
+                Explore the Boarvest vision and follow the
+                development of an investor-focused crypto
+                management experience.
               </p>
 
-              <a href="#home" className="button button-primary mt-8">
-                Back to the Top
-                <span aria-hidden="true">↑</span>
+              <a
+                href="#features"
+                className="button button-primary mt-8"
+              >
+                Explore Our Features
+                <span aria-hidden="true">↗</span>
               </a>
             </div>
           </div>
@@ -317,12 +371,13 @@ export default function Home() {
                 aria-label="Boarvest homepage"
                 className="inline-flex items-center gap-3"
               >
-                <span
-                  aria-hidden="true"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/10 text-xl font-bold text-emerald-300"
-                >
-                  B
-                </span>
+                <Image
+                  src="/image/boarvest-logo.png"
+                  alt="Boarvest boar logo"
+                  width={44}
+                  height={44}
+                  className="h-10 w-10 shrink-0 object-contain"
+                />
 
                 <span className="text-xl font-bold tracking-tight">
                   Boar<span className="text-emerald-400">vest</span>
@@ -336,12 +391,29 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-gray-400">
+            <nav
+              aria-label="Footer navigation"
+              className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-gray-400"
+            >
+              <a
+                href="#about"
+                className="transition-colors hover:text-white"
+              >
+                About
+              </a>
+
               <a
                 href="#features"
                 className="transition-colors hover:text-white"
               >
                 Features
+              </a>
+
+              <a
+                href="#how-it-works"
+                className="transition-colors hover:text-white"
+              >
+                How It Works
               </a>
 
               <a
@@ -364,17 +436,19 @@ export default function Home() {
               >
                 FAQ
               </a>
-            </div>
+            </nav>
           </div>
 
           <hr className="divider my-8" />
 
           <div className="flex flex-col gap-3 text-xs leading-6 text-gray-500 sm:flex-row sm:items-start sm:justify-between">
-            <p>© 2026 Boarvest. All rights reserved.</p>
+            <p>
+              © 2026 Boarvest. All rights reserved.
+            </p>
 
             <p className="max-w-xl sm:text-right">
-              Cryptocurrency investments involve risk and may result in
-              the loss of capital. Nothing on this page constitutes
+              Cryptocurrency investments involve risk and may result
+              in the loss of capital. Nothing on this page constitutes
               personalized financial advice or a guarantee of returns.
             </p>
           </div>
