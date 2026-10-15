@@ -4,294 +4,312 @@
 
 Boarvest is a cryptocurrency investment platform project.
 
-The public homepage will introduce the Boarvest brand, explain the
-platform's intended features, and provide visitors with a clear
-understanding of its purpose.
+The public homepage introduces the Boarvest brand, explains its
+intended capabilities, and provides visitors with an overview of
+the platform.
 
-The initial release will focus on the frontend and public-facing
-experience. Authentication, cryptocurrency wallet integration,
-deposits, withdrawals, and investment operations are outside the
-scope of the initial homepage.
+The initial release focuses on the frontend and public-facing
+experience. Authentication, wallet integration, deposits,
+withdrawals, and investment operations are outside the scope of
+the current homepage implementation.
 
-This document defines the proposed architecture and implementation
-plan for the public homepage.
+This document describes the homepage architecture, implemented
+components, design direction, and remaining review requirements.
 
 ## 2. Homepage Objectives
 
-The homepage should:
+The homepage aims to:
 
-- Establish a recognizable Boarvest brand identity.
-- Introduce the platform and its intended capabilities.
-- Provide clear navigation for visitors.
-- Explain the intended user journey.
-- Present planned features in an understandable way.
-- Communicate cryptocurrency investment risks responsibly.
-- Work well on mobile devices, tablets, and desktop screens.
-- Provide a maintainable foundation for future development.
+- Establish the Boarvest brand identity.
+- Explain the platform's intended purpose.
+- Introduce planned platform capabilities.
+- Provide clear navigation between homepage sections.
+- Present an illustrative portfolio dashboard.
+- Communicate cryptocurrency risks responsibly.
+- Support mobile, tablet, and desktop layouts.
+- Establish a maintainable foundation for future development.
 
 ## 3. Design Direction
 
 ### Visual Identity
 
-- Dark, premium crypto-finance aesthetic.
-- Deep charcoal or near-black backgrounds.
+The homepage uses the following design direction:
+
+- Dark charcoal and near-black backgrounds.
 - Emerald green as the primary accent.
 - Warm gold as a secondary accent.
-- White and muted grey typography.
-- Subtle borders and carefully spaced cards.
-- Modern, readable sans-serif typography.
-- Distinctive Boarvest branding and boar-inspired imagery.
+- White and muted-grey typography.
+- Dark cards with subtle borders.
+- Modern sans-serif typography.
+- Boarvest branding and boar-inspired imagery.
 
 ### Design Principles
+
+The interface should prioritize:
 
 - Mobile-first responsive design.
 - Clear visual hierarchy.
 - Consistent spacing and typography.
 - Accessible colour contrast.
-- Simple, purposeful animations.
+- Purposeful animations.
 - Minimal unnecessary visual clutter.
-- Reusable design patterns.
+- Reusable components.
 
-The interface should feel professional and distinctive rather than
-resembling a generic cryptocurrency template.
+The design should remain distinctive and professional without
+misrepresenting the platform's current capabilities.
 
 ## 4. Homepage Sections
 
 ### 4.1 Navigation
 
-Responsibilities:
+The navigation displays the Boarvest brand and provides access
+to the homepage sections.
 
-- Display the Boarvest brand and logo.
-- Provide navigation to homepage sections.
-- Provide Login and Sign Up entry points when appropriate.
-- Support a responsive mobile navigation menu.
-- Maintain consistent styling across screen sizes.
+Navigation destinations include:
 
-Navigation items:
-
-- Home
 - About
 - Features
 - How It Works
+- Markets
 - FAQ
-- Login
-- Sign Up
 
-Navigation links should point to valid sections or existing routes.
-Authentication routes must not be presented as functional until
+The navigation should adapt to the available screen width.
+
+On smaller screens, links must remain readable and easy to tap.
+A compact mobile menu should be used when the full navigation
+cannot fit comfortably.
+
+Authentication routes must not be presented as operational until
 authentication has been implemented.
 
 ### 4.2 Hero Section
 
-Responsibilities:
+The hero introduces Boarvest and communicates its intended purpose.
 
-- Communicate the purpose of Boarvest.
-- Introduce the platform using concise copy.
-- Present a primary call to action.
-- Provide a secondary navigation action.
-- Establish the visual identity through branding or illustration.
+It includes:
 
-Proposed headline:
+- A short introductory statement.
+- The main Boarvest headline.
+- Supporting descriptive text.
+- A primary call to action.
+- A secondary navigation action.
+- Investor-focused supporting statements.
 
-"Your Crypto Journey Starts with Boarvest."
+The hero must not promise profits or imply that unavailable
+financial services are operational.
 
-The supporting copy should explain the platform without promising
-profits or implying that unavailable features are operational.
+### 4.3 Portfolio Dashboard Preview
 
-### 4.3 Platform Features
+The homepage includes an illustrative dashboard preview.
 
-Introduce the platform's planned capabilities.
+It introduces concepts such as:
 
-Initial feature cards:
+- Total Portfolio Value.
+- Your Balance.
+- Total Deposits.
+- Investment Activity.
+- A portfolio chart.
+- Account connection status.
 
-- Portfolio Overview
-- Transaction Tracking
-- Account Management
+The preview is for presentation purposes only.
 
-Each card should explain its intended purpose.
+It must not imply that real customer accounts, balances,
+transactions, deposits, or investment performance are available.
 
-Features that have not been implemented must be presented as planned
-capabilities rather than existing services.
+Any illustrative data or chart must be clearly identified as
+a concept preview.
 
-### 4.4 How It Works
+### 4.4 About Section
 
-Explain the intended user journey in simple steps:
+The About section explains the purpose and intended direction
+of Boarvest.
 
-1. Create an account when registration becomes available.
-2. Explore the platform and its supported features.
-3. Monitor supported account and financial activity.
+It introduces the platform as a developing digital-asset and
+cryptocurrency investment management experience.
 
-The section must not imply that registration, deposits, or investment
-operations are available before they have been implemented.
+The section must distinguish the project's goals from features
+that have not yet been implemented.
 
-### 4.5 Cryptocurrency Market Overview
+### 4.5 Features Section
 
-Reserve a section for cryptocurrency market information.
+The Features section introduces planned platform capabilities,
+including:
+
+- Portfolio Overview.
+- Transaction Tracking.
+- Account Management.
+
+Descriptions must accurately represent the status of each feature.
+
+Planned capabilities must not be presented as operational services.
+
+### 4.6 How It Works
+
+This section explains the intended user journey.
+
+It may describe future account creation, platform exploration,
+and viewing supported account information.
+
+The content must clearly distinguish future functionality from
+services currently available.
+
+### 4.7 Cryptocurrency Market Overview
+
+The market section provides a place for future cryptocurrency
+market information.
 
 Potential assets include:
 
-- Bitcoin (BTC)
-- Ethereum (ETH)
-- Solana (SOL)
-- BNB
+- Bitcoin (BTC).
+- Ethereum (ETH).
+- Solana (SOL).
+- BNB.
 
-Initial implementation requirements:
+The homepage must not present fabricated prices as live market data.
 
-- Do not present invented prices as live market data.
-- Use clearly labelled illustrative data if sample figures are needed.
-- Otherwise, display a non-numeric market overview.
-- Introduce a market-data provider only when live data is required.
+Live market information will require an appropriate data provider
+and a separate integration.
 
-### 4.6 Security and Risk Information
+### 4.8 Security and Risk Information
 
-Explain the importance of security, transparency, and responsible
-participation in cryptocurrency markets.
+The homepage should communicate cryptocurrency risks and the
+importance of responsible participation in digital-asset markets.
 
-The content must not claim that Boarvest has completed security audits,
-insured funds, guaranteed returns, or other independently verifiable
-protections unless evidence supports those claims.
+It must not claim that Boarvest has completed security audits,
+insured customer funds, guaranteed returns, or obtained regulatory
+approvals unless those claims have been independently verified.
 
-### 4.7 Frequently Asked Questions
+### 4.9 Frequently Asked Questions
 
-Provide answers to common questions about:
+The FAQ should answer questions about:
 
 - What Boarvest is.
-- The platform's intended purpose.
-- Planned features.
-- Cryptocurrency investment risks.
-- Account access when registration becomes available.
+- Its intended purpose.
+- Planned platform features.
+- Cryptocurrency risks.
+- Account access and future availability.
 
-Answers must reflect the platform's actual capabilities and status.
+Answers must reflect the actual status of the project.
 
-### 4.8 Footer
+### 4.10 Footer
 
-The footer should contain the Boarvest brand and relevant navigation.
+The footer contains the Boarvest brand and relevant navigation.
 
-Potential links:
-
-- About
-- Features
-- FAQ
-- Contact
-- Privacy Policy
-- Terms of Service
-- Risk Disclosure
-
-Policy pages should not be presented as completed documents until
-their content has been prepared and reviewed.
+Contact details and legal-policy links should only be included
+when the appropriate information and documents are available.
 
 ## 5. Component Architecture
 
-The homepage will use reusable React components.
+The current landing-page components are located in:
 
-Proposed components:
+components/landing/
 
-### Layout Components
+The component files include:
 
-- Navbar
-- Footer
+- Navbar.tsx
+- HeroSection.tsx
+- AboutSection.tsx
+- FeaturesSection.tsx
 
-### Homepage Components
+The homepage is composed in:
 
-- HeroSection
-- FeaturesSection
-- HowItWorksSection
-- MarketOverviewSection
-- SecuritySection
-- FAQSection
+app/page.tsx
 
-The root homepage should primarily compose these components rather
-than contain every section's markup in one large file.
+The homepage file currently brings together the landing-page
+components and the remaining homepage sections.
 
-Components should be introduced as they become necessary. We should
-avoid creating empty placeholder components without a clear purpose.
+Additional sections may be extracted into separate components
+when doing so improves readability and maintainability.
 
-## 6. Proposed File Structure
+Components should be introduced when they have a clear purpose.
+Empty placeholder components should be avoided.
 
-The following structure is a starting proposal. It will be adjusted
-to match the Next.js starter and implementation requirements.
+## 6. Project Structure
+
+The relevant application structure is:
 
 app/
   layout.tsx
   page.tsx
   globals.css
-  favicon.ico
 
 components/
-  layout/
+  landing/
     Navbar.tsx
-    Footer.tsx
-  home/
     HeroSection.tsx
+    AboutSection.tsx
     FeaturesSection.tsx
-    HowItWorksSection.tsx
-    MarketOverviewSection.tsx
-    SecuritySection.tsx
-    FAQSection.tsx
 
 public/
-  images and other static assets
+  image/
+    boarvest-logo.png
 
 docs/
   ROADMAP.md
   architecture/
     HOMEPAGE.md
 
-Configuration files:
+.github/
+  workflows/
+    ci.yml
+
+The workflow file is planned for the development branch and
+will be added when the continuous-integration setup is prepared.
+
+Other configuration files include:
 
 - package.json
+- package-lock.json
 - tsconfig.json
 - next.config.ts
 - eslint.config.mjs
 - .gitignore
-- LICENSE
-- README.md
 
-The actual generated files and configuration may differ slightly
-depending on the selected Next.js version.
+The exact structure should be kept consistent with the actual
+repository.
 
 ## 7. Technology Stack
 
-The initial application will use:
+The application uses:
 
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- ESLint
-- npm
+- Next.js.
+- React.
+- TypeScript.
+- Tailwind CSS.
+- ESLint.
+- npm.
 
-Next.js App Router will manage the application's routes and layouts.
+Next.js App Router manages the application's routes and layouts.
 
-Server Components should be preferred for static homepage sections.
-Client Components should be introduced only where browser-side
-interactivity is required.
+Server Components should be preferred for static homepage content.
+Client Components should be introduced when browser-side
+interactivity requires them.
 
-Additional dependencies should be added only when they provide a
-clear benefit.
+Additional dependencies should only be added when they provide
+a clear benefit.
 
 ## 8. Responsive Design and Accessibility
 
-The homepage must support:
+The homepage should support mobile phones, tablets, and desktops.
 
-- Mobile phones
-- Tablets
-- Desktop screens
+Requirements include:
 
-Requirements:
+- Responsive layouts and typography.
+- No unintended horizontal overflow.
+- Readable navigation at narrow screen widths.
+- Sufficient spacing between interactive elements.
+- Semantic HTML.
+- Accessible names for interactive controls.
+- Keyboard-accessible navigation.
+- Appropriate alternative text for meaningful images.
+- Sufficient text and control contrast.
+- Respect for reduced-motion preferences when animations are used.
 
-- Use responsive layouts and typography.
-- Prevent horizontal overflow on narrow screens.
-- Use semantic HTML elements.
-- Provide accessible names for interactive controls.
-- Ensure keyboard accessibility for navigation.
-- Provide appropriate alternative text for meaningful images.
-- Maintain sufficient text and control contrast.
-- Respect reduced-motion preferences when animations are used.
+Mobile navigation and spacing remain part of the visual review.
 
 ## 9. Security and Financial Integrity
 
-The initial homepage is a presentation layer only.
+The homepage is a presentation layer.
 
 It must not implement or simulate real financial transactions.
 
@@ -304,70 +322,97 @@ Requirements:
 - Do not represent sample balances as real customer funds.
 - Do not present fabricated market prices as live data.
 
-Future financial functionality will require a separate architecture
-covering authentication, authorization, transaction integrity,
+Future financial functionality will require separate planning
+for authentication, authorization, transaction integrity,
 data protection, and applicable regulatory requirements.
 
 ## 10. Testing and Quality Assurance
 
-Before the homepage is considered ready for review:
+The homepage has previously passed ESLint and a production build
+using the Termux-compatible Webpack command.
 
-- Inspect the homepage on mobile and desktop layouts.
-- Check navigation links and interactive elements.
-- Verify that the layout has no unintended horizontal overflow.
-- Review accessibility and semantic HTML.
-- Run ESLint.
-- Run the production build.
-- Review all changes before committing.
-- Verify that no secrets have been committed.
+Further review is required after the remaining visual changes.
 
-## 11. Implementation Sequence
+The review process includes:
 
-The proposed implementation order is:
+- Inspecting the homepage in Brave on a mobile device.
+- Checking navigation links and interactive elements.
+- Reviewing narrow and wider screen layouts.
+- Checking for unintended horizontal overflow.
+- Reviewing accessibility and semantic HTML.
+- Running ESLint.
+- Running a production build.
+- Reviewing the final Git diff.
+- Confirming that no secrets have been committed.
 
-1. Review and initialize the Next.js application.
-2. Establish global styles and design tokens.
-3. Configure the root layout and metadata.
-4. Implement the navigation.
-5. Implement the hero section.
-6. Implement the features section.
-7. Implement the How It Works section.
-8. Implement the market overview.
-9. Implement security and risk information.
-10. Implement the FAQ and footer.
-11. Test and review the complete homepage.
-12. Update this document to reflect the actual implementation.
+A successful build does not replace visual and functional review.
+
+## 11. Implementation Status
+
+### Implemented
+
+- Public homepage structure.
+- Boarvest branding and logo integration.
+- Navigation component.
+- Hero section.
+- About section.
+- Features component.
+- Illustrative portfolio dashboard preview.
+- Additional homepage sections composed in app/page.tsx.
+- ESLint and production-build checks passed previously.
+
+### Remaining Review
+
+- Improve mobile navigation readability and spacing.
+- Review hero spacing and call-to-action layout.
+- Review dashboard preview spacing on mobile.
+- Recheck navigation and interactive elements.
+- Update this document after the final visual review.
+- Run ESLint and the production build after final changes.
+- Review the pull request before merging into dev.
+
+### Planned for Later Development
+
+- Authentication.
+- Wallet integration.
+- Live market-data integration.
+- Deposits and withdrawals.
+- Real financial operations.
+- Account data and transaction history.
 
 ## 12. Git Workflow
 
-Homepage development will take place on:
+Homepage development takes place on:
 
 feat/public-homepage
 
-The feature branch is based on dev.
+The feature branch is intended to merge into dev through a
+pull request.
 
-Documentation and implementation for this homepage will remain
-together on the feature branch.
+Future feature branches should be created from dev.
 
 Before merging:
 
-- Review the changes.
-- Run the required checks.
+- Review the implementation.
 - Verify the documentation.
-- Open a pull request into dev.
+- Run the required quality checks.
+- Confirm the required GitHub Actions checks pass.
+- Complete any required review.
 
-Do not merge directly into main.
+Feature branches must not be merged directly into main.
 
 ## 13. Acceptance Criteria
 
-The initial homepage is ready for review when:
+The homepage is ready for integration review when:
 
-- All agreed homepage sections are implemented.
-- The layout works on mobile and desktop.
-- Components are organized and maintainable.
-- Navigation behaves as intended.
-- Content does not misrepresent unavailable functionality.
-- Cryptocurrency risk information is appropriately presented.
+- The agreed homepage sections are present.
+- The architecture document matches the implementation.
+- Navigation is readable and usable on mobile.
+- The layout works at narrow and wider screen sizes.
+- No unintended horizontal overflow is present.
+- Content accurately represents the platform's status.
+- No unsupported financial claims or fabricated live data are shown.
 - ESLint passes.
 - The production build succeeds.
-- The implementation is reviewed before merging.
+- The final changes have been reviewed.
+- Required GitHub Actions checks pass before merging into dev.
