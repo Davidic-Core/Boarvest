@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function AuthErrorPage() { return <main className="flex min-h-screen items-center justify-center bg-[#080d0b] px-4"><section className="w-full max-w-md rounded-3xl border border-white/[0.1] bg-[#0d1511] p-8 text-center"><h1 className="text-2xl font-black text-white">This link is no longer valid</h1><p className="mt-3 text-gray-400">Request a new password reset link or return to login.</p><Link href="/forgot-password" className="button button-primary mx-auto mt-8">Request new link</Link></section></main>; }
