@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import "./Navbar.css";
 
@@ -66,21 +67,21 @@ export default function Navbar() {
 
             <div className="boarvest-dropdown-divider" />
 
-            <a
-              href="#login"
+            <Link
+              href="/login"
               className="boarvest-dropdown-login"
               onClick={() => setIsOpen(false)}
             >
               Log In
-            </a>
+            </Link>
 
-            <a
-              href="#signup"
+            <Link
+              href="/signup"
               className="boarvest-dropdown-signup"
               onClick={() => setIsOpen(false)}
             >
               Get Started
-            </a>
+            </Link>
           </div>
         )}
       </nav>
