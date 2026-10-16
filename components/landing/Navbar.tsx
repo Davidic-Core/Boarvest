@@ -1,64 +1,88 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
+import "./Navbar.css";
 
 const navigationLinks = [
+  { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Features", href: "#features" },
-  { label: "How It Works", href: "#how-it-works" },
+  { label: "Overview", href: "#features" },
   { label: "Markets", href: "#markets" },
-  { label: "FAQ", href: "#faq" },
 ];
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <header className="glass sticky top-0 z-50 border-x-0 border-t-0">
-      <nav
-        aria-label="Main navigation"
-        className="container flex min-h-[76px] items-center justify-between gap-4"
-      >
-        {/* Brand */}
-        <Link
+    <header className="boarvest-header">
+      <nav className="boarvest-navbar">
+        <a
           href="#home"
-          aria-label="Boarvest homepage"
-          className="flex shrink-0 items-center gap-3"
+          className="boarvest-brand"
+          aria-label="Boarvest home"
+          onClick={() => setIsOpen(false)}
         >
           <Image
             src="/image/boarvest-logo.png"
-            alt="Boarvest boar logo"
-            width={44}
-            height={44}
+            alt="Boarvest logo"
+            width={42}
+            height={42}
             priority
-            className="h-10 w-10 shrink-0 object-contain"
           />
 
-          <span className="text-xl font-bold tracking-tight text-white">
-            Boar<span className="text-emerald-400">vest</span>
+          <span>
+            Boar<span className="boarvest-brand-accent">vest</span>
           </span>
-        </Link>
+        </a>
 
-        {/* Desktop navigation */}
-        <div className="hidden items-center gap-6 text-sm text-gray-400 lg:flex xl:gap-8">
-          {navigationLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="whitespace-nowrap transition-colors hover:text-emerald-400"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Call to action */}
-        <Link
-          href="#get-started"
-          className="button button-primary min-h-10 shrink-0 px-3 py-2 text-sm sm:px-4"
+        <button
+          type="button"
+          className="boarvest-menu-toggle"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+          aria-controls="boarvest-dropdown"
+          onClick={() => setIsOpen((current) => !current)}
         >
-          <span className="hidden sm:inline">Explore Boarvest</span>
-          <span className="sm:hidden">Explore</span>
+          <span className={isOpen ? "menu-line line-one open" : "menu-line line-one"} />
+          <span className={isOpen ? "menu-line line-two open" : "menu-line line-two"} />
+          <span className={isOpen ? "menu-line line-three open" : "menu-line line-three"} />
+        </button>
 
-          <span aria-hidden="true">↗</span>
-        </Link>
+        {isOpen && (
+          <div id="boarvest-dropdown" className="boarvest-dropdown">
+            <p className="boarvest-dropdown-heading">NAVIGATION</p>
+
+            {navigationLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="boarvest-dropdown-link"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
+
+            <div className="boarvest-dropdown-divider" />
+
+            <a
+              href="#login"
+              className="boarvest-dropdown-login"
+              onClick={() => setIsOpen(false)}
+            >
+              Log In
+            </a>
+
+            <a
+              href="#signup"
+              className="boarvest-dropdown-signup"
+              onClick={() => setIsOpen(false)}
+            >
+              Get Started
+            </a>
+          </div>
+        )}
       </nav>
     </header>
   );

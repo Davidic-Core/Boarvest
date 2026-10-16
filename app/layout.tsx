@@ -14,34 +14,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Boarvest | High-Yield Crypto Investment Management",
+  title: "Boarvest | Digital Asset Management",
   description:
-    "Take full control of your digital assets with Boarvest. Track real-time market data, optimize portfolio performance, and monitor active crypto investments using a lightning-fast, investor-first dashboard architecture",
+    "Discover Boarvest, a developing digital asset management platform focused on portfolio visibility, cryptocurrency market awareness, and a clearer investor experience.",
   applicationName: "Boarvest",
   keywords: [
     "Boarvest",
-    "crypto investment management",
-    "digital assets",
+    "digital asset management",
     "crypto portfolio",
-    "investment dashboard",
-    "cryptocurrency market data",
+    "cryptocurrency market information",
+    "digital assets",
+    "portfolio visibility",
   ],
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "Boarvest | High-Yield Crypto Investment Management",
+    title: "Boarvest | Digital Asset Management",
     description:
-      "Take control of your digital assets with an investor-first crypto portfolio and investment management experience.",
+      "Explore the Boarvest vision for a clearer, more organized digital asset management experience.",
     siteName: "Boarvest",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Boarvest | High-Yield Crypto Investment Management",
+    title: "Boarvest | Digital Asset Management",
     description:
-      "A modern, investor-first experience for managing and monitoring digital assets.",
+      "A developing platform focused on digital asset visibility, market awareness, and a clearer investor experience.",
   },
 };
 
@@ -61,7 +61,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
 }
