@@ -127,6 +127,33 @@ p {
   color: #ffffff;
 }
 
+.auth-input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.045);
+  padding: 0.75rem 0.875rem;
+  color: #f4f7f5;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.auth-input:focus {
+  border-color: var(--primary);
+  background: rgba(39, 209, 127, 0.06);
+}
+
+.auth-input[aria-invalid="true"] {
+  border-color: #f87171;
+}
+
+.auth-error {
+  color: #fca5a5;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
 /* ========================================
    ACCESSIBILITY
 ======================================== */
