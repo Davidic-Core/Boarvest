@@ -1,8 +1,9 @@
 import { notFound, redirect } from "next/navigation";
 
+import AdminDashboard from "@/components/admin/AdminDashboard";
 import { getCurrentAdmin, getCurrentUser } from "@/lib/auth/admin";
 
-export const dynamic = "force-dynamic";
+export const instant = false;
 
 export default async function AdminPage() {
   const user = await getCurrentUser();
@@ -10,5 +11,5 @@ export default async function AdminPage() {
   if (!user) redirect("/login?next=/admin");
   if (!(await getCurrentAdmin())) notFound();
 
-  return null;
+  return <AdminDashboard />;
 }
