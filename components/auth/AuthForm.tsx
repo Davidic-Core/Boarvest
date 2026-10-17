@@ -47,7 +47,23 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setLoading(false);
     if (result.error) { setStatus(isSignup ? "We could not create your account. Check your details and try again." : "Invalid email or password."); return; }
     if (isSignup && !result.data.session) { setStatus("Account created. Check your email to confirm your address before signing in."); return; }
-    router.push("/dashboard"); router.refresh();
+    if (isSignup) {
+      router.push("/dashboard");
+      router.refresh();
+      return;
+    }
+
+    const destinationResponse = await fetch("/auth/redirect", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+    });
+    const destination = destinationResponse.ok
+      ? ((await destinationResponse.json()) as { destination?: "/admin" | "/dashboard" }).destination
+      : "/dashboard";
+
+    router.push(destination === "/admin" ? "/admin" : "/dashboard");
+    router.refresh();
   }
 
   return (
