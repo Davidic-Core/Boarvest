@@ -6,18 +6,28 @@ export async function getCurrentUser() {
   const supabase = await createClient();
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
 
-  return user;
+  return error ? null : user;
 }
 
-export async function isAdmin(userId: string) {
+export async function getCurrentAdmin() {
   const supabase = await createClient();
-  const { data: membership, error } = await supabase
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) return null;
+
+  const { data: membership, error: membershipError } = await supabase
     .from("admin_memberships")
     .select("user_id")
-    .eq("user_id", userId)
+    .eq("user_id", user.id)
     .maybeSingle();
 
-  return !error && Boolean(membership);
+  if (membershipError || !membership || membership.user_id !== user.id) return null;
+
+  return user;
 }

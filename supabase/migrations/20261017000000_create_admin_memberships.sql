@@ -10,3 +10,7 @@ on public.admin_memberships
 for select
 to authenticated
 using (auth.uid() = user_id);
+
+revoke insert, update, delete, truncate, references, trigger
+on public.admin_memberships
+from anon, authenticated;
