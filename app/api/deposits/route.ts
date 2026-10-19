@@ -27,8 +27,10 @@ export async function POST(request: Request) {
     status: "pending",
   }).select("id, reference, status, created_at").single();
   if (error) {
-    console.error("[v0] deposit creation failed", error.code);
-    return NextResponse.json({ error: "The deposit request could not be saved." }, { status: 500 });
+    console.error("[v0] deposit creation failed", { code: error.code, message: error.message, details: error.details, hint: error.hint });
+    const missingTable = error.code === "42P01" || error.code === "PGRST205";
+    const denied = error.code === "42501" || error.code === "PGRST301";
+    return NextResponse.json({ error: missingTable ? "Deposit requests are not enabled yet. The Supabase deposit migration must be applied." : denied ? "You are not authorized to create this deposit request." : "The deposit request could not be saved. Please try again." }, { status: missingTable ? 503 : denied ? 403 : 500 });
   }
   return NextResponse.json({ deposit: data }, { status: 201 });
 }
