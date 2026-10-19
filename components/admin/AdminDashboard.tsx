@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignOutButton from "@/components/auth/SignOutButton";
 
 type Section =
@@ -36,6 +36,13 @@ const summaryCards = [
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState<Section>("Overview");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [deposits, setDeposits] = useState<Array<{ id: string; reference: string; user_id: string; asset: string; network: string; requested_usd: number; destination_wallet: string; status: string; created_at: string; review_note: string | null }>>([]);
+  const [depositError, setDepositError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activeSection !== "Deposits") return;
+    fetch("/api/admin/deposits").then(async (response) => { const body = await response.json(); if (!response.ok) throw new Error(body.error); setDeposits(body.deposits ?? []); }).catch((error) => setDepositError(error instanceof Error ? error.message : "Deposits are unavailable."));
+  }, [activeSection]);
 
   function selectSection(section: Section) {
     setActiveSection(section);
@@ -88,7 +95,7 @@ export default function AdminDashboard() {
         </header>
 
         <main className="admin-main">
-          {activeSection === "Overview" ? <Overview /> : <PlaceholderSection section={activeSection} />}
+          {activeSection === "Overview" ? <Overview /> : activeSection === "Deposits" ? <DepositManagement deposits={deposits} error={depositError} onReviewed={(id) => setDeposits((items) => items.map((item) => item.id === id ? { ...item, status: "reviewed" } : item))} /> : <PlaceholderSection section={activeSection} />}
         </main>
       </div>
     </div>
@@ -122,6 +129,14 @@ function Overview() {
       </section>
     </>
   );
+}
+
+function DepositManagement({ deposits, error, onReviewed }: { deposits: Array<{ id: string; reference: string; user_id: string; asset: string; network: string; requested_usd: number; destination_wallet: string; status: string; created_at: string; review_note: string | null }>; error: string | null; onReviewed: (id: string) => void }) {
+  async function review(id: string, decision: "approved" | "declined") {
+    const response = await fetch(`/api/admin/deposits/${id}/review`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ decision }) });
+    if (response.ok) onReviewed(id);
+  }
+  return <section className="admin-panel"><div className="admin-panel-heading"><div><p className="admin-eyebrow">Financial controls</p><h2>Deposit management</h2></div><span className="admin-status-pill">Verify funds first</span></div><p>{error ?? "Review requests only after independently confirming the incoming payment. Approval credits the user's balance atomically."}</p><div className="admin-deposit-list">{deposits.length === 0 ? <div className="admin-empty"><strong>No deposit requests</strong><p>New user requests will appear here.</p></div> : deposits.map((deposit) => <article className="admin-deposit-row" key={deposit.id}><div><strong>{deposit.reference}</strong><small>{deposit.asset} · {deposit.network} · User {deposit.user_id}</small><small>${Number(deposit.requested_usd).toLocaleString("en-US", { minimumFractionDigits: 2 })} · {new Date(deposit.created_at).toLocaleString()}</small><small>{deposit.destination_wallet}</small></div><div><span className="admin-status-pill">{deposit.status}</span>{deposit.status === "pending" && <div><button className="admin-action-button" type="button" onClick={() => void review(deposit.id, "approved")}>Approve verified</button><button className="admin-action-button" type="button" onClick={() => void review(deposit.id, "declined")}>Decline</button></div>}</div></article>)}</div></section>;
 }
 
 function PlaceholderSection({ section }: { section: Section }) {

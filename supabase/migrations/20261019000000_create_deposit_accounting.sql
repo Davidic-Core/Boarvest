@@ -167,6 +167,19 @@ create trigger account_ledger_append_only
   before update or delete on public.account_ledger
   for each row execute function public.reject_ledger_mutation();
 
+create or replace function public.reject_reviewed_deposit_mutation()
+returns trigger language plpgsql security definer set search_path = '' as $$
+begin
+  if old.status <> 'pending' and (new.user_id, new.asset, new.network, new.requested_usd, new.destination_wallet) is distinct from (old.user_id, old.asset, old.network, old.requested_usd, old.destination_wallet) then
+    raise exception 'reviewed deposit financial fields are immutable' using errcode = '42501';
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists deposit_requests_financial_fields_immutable on public.deposit_requests;
+create trigger deposit_requests_financial_fields_immutable before update on public.deposit_requests for each row execute function public.reject_reviewed_deposit_mutation();
+revoke all on function public.reject_reviewed_deposit_mutation() from public, anon, authenticated;
+
 create or replace function public.review_deposit_request(p_deposit_id uuid, p_decision text, p_review_note text default null)
 returns public.deposit_requests
 language plpgsql security definer set search_path = ''
