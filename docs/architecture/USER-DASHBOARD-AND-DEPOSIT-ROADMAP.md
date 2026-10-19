@@ -12,7 +12,7 @@
 
 A later implementation must add trusted Supabase tables, RLS, immutable ledger entries, idempotent server-side mutations, and administrator-only approval transitions. A deposit request is only user intent; it must not credit available funds. A verified approval may post the approved USD amount exactly once. Portfolio and profit values must be derived from persisted investment and verified-return records.
 
-The intended deposit UI supports SOL/Solana, ETH/Ethereum, and BNB/BNB Smart Chain, CoinGecko pricing with 60-second polling, estimated USD-to-token conversion, the supplied treasury addresses, and $10–$5,000 validation. None of that interface or CoinGecko integration is implemented in this stage. The intended ROI calculator minimum is $300 and the duration is seven days; ROI percentages, tiers, and payout rules remain unconfigured and are not displayed.
+The deposit interface is now implemented at `/dashboard/deposits`. It supports exactly SOL/Solana, ETH/Ethereum, and BNB/BNB Smart Chain with reputable CoinGecko-hosted token icons, the supplied treasury addresses, $10–$5,000 client-side validation, dynamic USD-to-token estimates, asset-specific network warnings, and copy feedback. `/api/market-prices` fetches all three prices server-side in one request, uses Next.js response caching, refreshes the client approximately every 60 seconds, prevents overlapping requests, and exposes loading/error states. Confirm Deposit remains intentionally non-persistent: it displays an honest unavailable message and creates no request or financial record. The intended ROI calculator minimum is $300 and the duration is seven days; ROI percentages, tiers, and payout rules remain unconfigured and are not displayed.
 
 ## Relevant routes and components
 
