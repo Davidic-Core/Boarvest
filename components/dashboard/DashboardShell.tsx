@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import SignOutButton from "@/components/auth/SignOutButton";
 
@@ -12,19 +13,21 @@ type DashboardShellProps = {
 };
 
 const navigation = [
-  { label: "Overview", href: "/dashboard", icon: "◈", active: true },
-  { label: "Portfolio", icon: "◒" },
-  { label: "Deposits", icon: "＋" },
-  { label: "Transactions", icon: "≡" },
+  { label: "Overview", href: "/dashboard", icon: "◈" },
+  { label: "Portfolio", href: "/dashboard/portfolio", icon: "◒" },
+  { label: "Deposits", href: "/dashboard/deposits", icon: "＋" },
+  { label: "Withdrawals", icon: "−", unavailable: true },
+  { label: "Transactions", href: "/dashboard/transactions", icon: "≡" },
 ];
 
 const secondaryNavigation = [
-  { label: "Account Settings", icon: "⚙" },
-  { label: "Help & Support", icon: "?" },
+  { label: "Account Settings", href: "/dashboard/settings", icon: "⚙" },
+  { label: "Help & Support", href: "/dashboard/help", icon: "?" },
 ];
 
 export default function DashboardShell({ children, userEmail, displayName }: DashboardShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
   const initials = (displayName ?? userEmail).slice(0, 2).toUpperCase();
 
   return (
@@ -37,15 +40,15 @@ export default function DashboardShell({ children, userEmail, displayName }: Das
         </div>
         <nav aria-label="Dashboard navigation" className="dashboard-nav">
           <p className="dashboard-nav-label">Workspace</p>
-          {navigation.map((item) => item.href ? (
-            <Link key={item.label} href={item.href} className={`dashboard-nav-item ${item.active ? "dashboard-nav-item-active" : ""}`} onClick={() => setIsMenuOpen(false)}>
+          {navigation.map((item) => item.href && !item.unavailable ? (
+            <Link key={item.label} href={item.href} className={`dashboard-nav-item ${pathname === item.href ? "dashboard-nav-item-active" : ""}`} onClick={() => setIsMenuOpen(false)}>
               <span aria-hidden="true">{item.icon}</span>{item.label}
             </Link>
           ) : (
-            <span key={item.label} className="dashboard-nav-item dashboard-nav-item-disabled" aria-disabled="true"><span aria-hidden="true">{item.icon}</span>{item.label}<small>Soon</small></span>
+            <span key={item.label} className="dashboard-nav-item dashboard-nav-item-disabled" aria-disabled="true"><span aria-hidden="true">{item.icon}</span>{item.label}<small>Unavailable</small></span>
           ))}
           <p className="dashboard-nav-label dashboard-nav-label-spaced">Support</p>
-          {secondaryNavigation.map((item) => <span key={item.label} className="dashboard-nav-item dashboard-nav-item-disabled" aria-disabled="true"><span aria-hidden="true">{item.icon}</span>{item.label}<small>Soon</small></span>)}
+          {secondaryNavigation.map((item) => <Link key={item.label} href={item.href} className={`dashboard-nav-item ${pathname === item.href ? "dashboard-nav-item-active" : ""}`} onClick={() => setIsMenuOpen(false)}><span aria-hidden="true">{item.icon}</span>{item.label}</Link>)}
         </nav>
         <div className="dashboard-sidebar-footer">
           <div className="dashboard-user-chip"><span className="dashboard-avatar">{initials}</span><span className="dashboard-user-copy"><strong>{displayName ?? "Boarvest member"}</strong><small>{userEmail}</small></span></div>
