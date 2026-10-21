@@ -45,9 +45,26 @@ export async function GET(request: Request) {
     });
   }
 
-  const { data, error } = await client.auth.admin.listUsers({ page: 1, perPage: 1000 });
-  if (error) return NextResponse.json({ error: "User records are unavailable." }, { status: 503 });
-  return NextResponse.json({ users: data.users.map((user) => ({ id: user.id, email: user.email ?? "Not provided", name: getDisplayName(user.user_metadata) })) });
+  const users = [];
+  let page = 1;
+  const perPage = 1000;
+
+  while (true) {
+    const { data, error } = await client.auth.admin.listUsers({ page, perPage });
+    if (error) return NextResponse.json({ error: "User records are unavailable." }, { status: 503 });
+
+    users.push(...data.users);
+    if (data.users.length < perPage) break;
+    page += 1;
+  }
+
+  return NextResponse.json({
+    users: users.map((user) => ({
+      id: user.id,
+      email: user.email ?? "Not provided",
+      name: getDisplayName(user.user_metadata),
+    })),
+  });
 }
 
 function getDisplayName(metadata: Record<string, unknown> | undefined) {
