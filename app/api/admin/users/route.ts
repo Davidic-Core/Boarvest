@@ -3,7 +3,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { getCurrentAdmin } from "@/lib/auth/admin";
 
 function getServiceClient() {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SECRET_KEY;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!url || !serviceKey) return { client: null, missing: !url ? "SUPABASE_URL" : "SUPABASE_SERVICE_ROLE_KEY" };
   return { client: createSupabaseClient(url, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } }), missing: null };
