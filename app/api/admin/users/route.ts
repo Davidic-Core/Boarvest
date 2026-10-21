@@ -5,15 +5,20 @@ import { getCurrentAdmin } from "@/lib/auth/admin";
 function getServiceClient() {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SECRET_KEY;
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (!serviceKey || !url) return null;
-  return createSupabaseClient(url, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } });
+  if (!url || !serviceKey) return { client: null, missing: !url ? "SUPABASE_URL" : "SUPABASE_SERVICE_ROLE_KEY" };
+  return { client: createSupabaseClient(url, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } }), missing: null };
 }
 
 export async function GET(request: Request) {
   if (!await getCurrentAdmin()) return NextResponse.json({ error: "Administrator access required." }, { status: 403 });
 
-  const client = getServiceClient();
-  if (!client) return NextResponse.json({ error: "User management is unavailable because the protected Supabase admin client is not configured." }, { status: 503 });
+  const { client, missing } = getServiceClient();
+  if (!client) {
+    const message = missing === "SUPABASE_SERVICE_ROLE_KEY"
+      ? "User management is unavailable because SUPABASE_SERVICE_ROLE_KEY is not configured on the server."
+      : "User management is unavailable because the Supabase URL is not configured on the server.";
+    return NextResponse.json({ error: message }, { status: 503 });
+  }
 
   const url = new URL(request.url);
   const selectedUserId = url.searchParams.get("userId");
