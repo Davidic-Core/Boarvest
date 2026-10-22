@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import DashboardShell from "@/components/dashboard/DashboardShell";
 import { getCurrentAdmin } from "@/lib/auth/admin";
 import { createClient } from "@/lib/supabase/server";
+import ProfileInformation from "@/components/dashboard/ProfileInformation";
 
 export const instant = false;
 
@@ -41,12 +42,13 @@ export default async function SettingsPage() {
           <p>Manage your personal information and account security.</p>
         </header>
         <div className="settings-grid">
-          <SettingSection title="Profile Information" description="Review the personal information associated with your account.">
-            <div className="settings-detail-grid">
-              <div><span>Full name</span><strong>{displayName ?? "Not provided"}</strong></div>
-              <div><span>Email address</span><strong>{user.email ?? "Not provided"}</strong></div>
-              <div><span>Account ID</span><strong className="settings-value-mono">{user.id}</strong></div>
-            </div>
+          <SettingSection title="Profile Information" description="Review and update the personal information associated with your account.">
+            <ProfileInformation
+              fullName={displayName ?? ""}
+              email={user.email ?? ""}
+              userId={user.id}
+              createdAt={user.created_at ?? null}
+            />
           </SettingSection>
           <SettingSection title="Security" description="Password and session controls will be available here.">
             <p className="settings-placeholder-copy">Security management is prepared for a future phase. Your existing authentication and sign-out behavior remain unchanged.</p>

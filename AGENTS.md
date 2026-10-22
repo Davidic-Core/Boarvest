@@ -118,15 +118,23 @@ Phase 2 Implementation Summary
 
 Phase 3: Profile Information
 
-- [ ] Display the authenticated user's full name.
-- [ ] Display the user's email address as read-only initially.
-- [ ] Display the user's ID as read-only.
-- [ ] Display the account creation date if available.
-- [ ] Allow editing only of profile fields supported by the existing data model.
-- [ ] Add a Save Changes button.
-- [ ] Validate form input and display clear success or error messages.
+- [x] Display the authenticated user's full name.
+- [x] Display the user's email address as read-only initially.
+- [x] Display the user's ID as read-only.
+- [x] Display the account creation date if available.
+- [x] Allow editing only of profile fields supported by the existing data model.
+- [x] Add a Save Changes button.
+- [x] Validate form input and display clear success or error messages.
 - [ ] Ensure users can access and update only their own profile information.
 - [ ] Verify profile changes persist after refreshing the page.
+
+Phase 3 Implementation Summary
+
+- Implemented an authenticated profile information editor that reads the current Supabase Auth user and updates only the supported `full_name` user metadata field with `auth.updateUser`, leaving email and ID read-only.
+- Added account creation date display, client-side name validation, accessible status messaging, and a Save Changes action that refreshes the server-rendered dashboard after success.
+- Changed files: `components/dashboard/ProfileInformation.tsx`, `app/dashboard/settings/page.tsx`, `app/dashboard/dashboard.css`, and this checklist.
+- Validation: `npm run lint` passed with one pre-existing `@next/next/no-img-element` warning in `app/dashboard/deposits/DepositInterface.tsx`; `npx tsc --noEmit` passed; `npm run build` passed; unauthenticated access to `/dashboard/settings` redirected to `/login?next=/dashboard/settings` at the requested 538x890 viewport.
+- Remaining limitations: authenticated save, ownership behavior, success/error interaction, and refresh persistence could not be verified because no test credentials or test account were available. No database migration, environment variable, service-role key, deposit, Transactions, or admin-dashboard changes were made.
 
 Phase 4: Security
 
