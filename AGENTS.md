@@ -41,19 +41,58 @@ The agent must inspect the existing codebase and maintain this checklist. Mark a
 
 Phase 1: Inspect and Plan
 
-- [ ] Locate the existing Account Settings navigation item and page.
-- [ ] Locate the existing dashboard navigation component and determine how menu labels and routes are configured.
-- [ ] Locate the current Sign Out button and inspect its existing logout implementation.
-- [ ] Inspect the existing Supabase authentication and profile-data implementation.
-- [ ] Identify where the authenticated user's full name, email, user ID, and account creation date come from.
-- [ ] Determine which profile fields can safely be edited using the current schema.
-- [ ] Inspect existing password-change and password-reset functionality.
-- [ ] Inspect existing dashboard balance and earned-profit components.
-- [ ] Identify how the selected display currency could persist across sessions.
-- [ ] Determine whether an existing, approved cryptocurrency exchange-rate source is available.
-- [ ] Document the proposed files to change and the purpose of each change.
-- [ ] Identify any required database migration, environment variable, or external service before proposing it.
-- [ ] Present the implementation plan for user approval.
+- [x] Locate the existing Account Settings navigation item and page.
+- [x] Locate the existing dashboard navigation component and determine how menu labels and routes are configured.
+- [x] Locate the current Sign Out button and inspect its existing logout implementation.
+- [x] Inspect the existing Supabase authentication and profile-data implementation.
+- [x] Identify where the authenticated user's full name, email, user ID, and account creation date come from.
+- [x] Determine which profile fields can safely be edited using the current schema.
+- [x] Inspect existing password-change and password-reset functionality.
+- [x] Inspect existing dashboard balance and earned-profit components.
+- [x] Identify how the selected display currency could persist across sessions.
+- [x] Determine whether an existing, approved cryptocurrency exchange-rate source is available.
+- [x] Document the proposed files to change and the purpose of each change.
+- [x] Identify any required database migration, environment variable, or external service before proposing it.
+- [x] Present the implementation plan for user approval.
+
+Phase 1 Findings
+
+- Navigation is defined in `components/dashboard/DashboardShell.tsx`. The secondary item is currently labeled `Account Settings` and links to `/dashboard/settings`; the page exists at `app/dashboard/settings/page.tsx` but renders only a `WorkspacePlaceholder`.
+- `components/dashboard/DashboardShell.tsx` receives `userEmail` and `displayName` from each server-rendered dashboard page. Its sidebar sign-out control is `components/auth/SignOutButton.tsx`, which calls the browser Supabase client's `auth.signOut()`, then replaces the route with `/login` and refreshes the router.
+- Authentication uses `components/auth/AuthForm.tsx`, `lib/supabase/client.ts`, `lib/supabase/server.ts`, `lib/supabase/proxy.ts`, `proxy.ts`, and `app/auth/callback/route.ts`. Signup stores `full_name` in Supabase Auth `user_metadata`; the inspected code does not define a separate profile table or profile migration.
+- The dashboard derives the display name from `user.user_metadata.display_name`, `full_name`, or `name`. Email comes from `user.email`. The user ID is available as `user.id` in the authenticated Supabase user object. Account creation date is available from Supabase Auth's user record (`created_at`), but the current dashboard does not pass or render it.
+- Based on the inspected migrations, only `admin_memberships`, `deposit_requests`, and `account_ledger` are defined. No editable profile columns are present. The safest initial editable profile field is the Auth metadata `full_name`, updated only for the authenticated user through Supabase Auth; email and user ID should remain read-only. A separate profile table would require an approved migration and RLS policy.
+- Password functionality currently consists of Supabase password sign-in/sign-up in `components/auth/AuthForm.tsx`, email reset in `app/forgot-password/page.tsx`, and `auth.updateUser({ password })` in `app/reset-password/page.tsx`. There is no authenticated in-dashboard change-password form yet.
+- `app/dashboard/page.tsx` currently queries the user-scoped `account_ledger.amount_usd` rows and calculates the total balance from USD ledger amounts. Earned profit and portfolio values remain placeholders (`$0.00`) and have no data source. The existing deposit flow and Transactions route must not be changed for this work.
+- No persistence mechanism for display currency exists. A user-scoped Auth metadata field could persist a preference without changing financial records, but this must be confirmed against the project's Supabase Auth metadata policy; a dedicated preferences/profile table with RLS is the more explicit option and requires a migration.
+- `app/api/market-prices/route.ts` already fetches SOL, ETH, and BNB USD prices from CoinGecko with short-lived caching. The repository does not establish that CoinGecko is an approved production exchange-rate source, so rates must not be treated as approved until that dependency is explicitly accepted and its failure/staleness behavior is defined.
+- No new environment variable is required by the inspected existing market-price route. A schema migration and RLS policy would be required only if persisted preferences or editable profile data use a new table; no migration should be created or applied before approval.
+
+Proposed implementation files (after approval only)
+
+- `components/dashboard/DashboardShell.tsx`: rename the navigation label to `Settings` while preserving `/dashboard/settings`.
+- `app/dashboard/settings/page.tsx`: replace the placeholder with the authenticated settings page and server-side user data loading.
+- New small settings client component(s), likely under `components/dashboard/`: handle profile form validation, password actions, currency selection, status messaging, and sign-out presentation without moving authorization to the client.
+- `app/dashboard/page.tsx` and shared dashboard display components: apply a persisted display preference to supported USD balance/profit displays only, preserving USD as the accounting unit and leaving ledger/transactions unchanged.
+- `app/api/market-prices/route.ts`: reuse or harden the existing CoinGecko-backed route only after approval of it as the exchange-rate source; do not invent fallback rates.
+- `supabase/migrations/<timestamp>_...sql` (only if approved): add a user-scoped preferences/profile model and RLS policies, if Auth metadata is not approved for persistence.
+- `lib/supabase/client.ts` / `lib/supabase/server.ts`: likely no changes; reuse the existing SSR-safe clients unless a narrowly scoped server action or route handler requires a new helper.
+
+Safe conversion approach
+
+- Keep every ledger, deposit request, transaction, and accounting calculation in USD. Store the selected display currency separately from financial records.
+- For USD, render the USD amount directly. For SOL, ETH, and BNB, fetch a timestamped, validated USD-per-token rate from the approved server-side source and calculate `displayAmount = usdAmount / usdPerToken`, with explicit symbol/asset labeling such as `≈ 0.00 SOL`; do not imply asset ownership.
+- Convert only presentation values, round only at display time, and never write converted values back to `account_ledger` or any transaction table. Show a clear unavailable/stale-rate state instead of a fabricated or cached-too-old rate.
+- Prevent double conversion by keeping a canonical USD value in the data loader and passing currency plus rate into a single formatter. Profit must be converted from a verified USD profit source; the current `$0.00` placeholder is not a verified source and should not be presented as live converted profit.
+
+Recommended implementation sequence
+
+1. Approve the settings scope, the editable `full_name` storage approach, and whether CoinGecko is an approved rate source.
+2. Preserve `/dashboard/settings`, rename only the navigation label, and build the authenticated settings shell.
+3. Add server-authorized profile loading/update behavior with validation and explicit ownership checks.
+4. Reuse the existing Supabase reset flow and add an in-settings password action without changing session handling or sign-out semantics.
+5. Add currency preference persistence, then wire only verified USD-backed balance/profit displays through a single conversion formatter.
+6. Add focused verification for settings, auth flows, currency persistence/conversion, and regression checks for deposits, Transactions, and admin access before broader validation commands.
 
 Phase 2: Settings Navigation and Layout
 
