@@ -7,7 +7,7 @@ import ProfileInformation from "@/components/dashboard/ProfileInformation";
 
 export const instant = false;
 
-function SettingSection({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
+function SettingSection({ title, description, children, badge = "Coming soon" }: { title: string; description: string; children: React.ReactNode; badge?: string | null }) {
   return (
     <section className="dashboard-card settings-section">
       <div className="settings-section-heading">
@@ -15,7 +15,7 @@ function SettingSection({ title, description, children }: { title: string; descr
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        <span className="dashboard-badge">Coming soon</span>
+        {badge ? <span className="dashboard-badge">{badge}</span> : null}
       </div>
       <div className="settings-section-content">{children}</div>
     </section>

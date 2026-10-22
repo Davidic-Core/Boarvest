@@ -125,16 +125,19 @@ Phase 3: Profile Information
 - [x] Allow editing only of profile fields supported by the existing data model.
 - [x] Add a Save Changes button.
 - [x] Validate form input and display clear success or error messages.
-- [ ] Ensure users can access and update only their own profile information.
-- [ ] Verify profile changes persist after refreshing the page.
+- [x] Ensure users can access and update only their own profile information.
+- [x] Verify profile changes persist after refreshing the page.
 
 Phase 3 Implementation Summary
 
 - Implemented an authenticated profile information editor that reads the current Supabase Auth user and updates only the supported `full_name` user metadata field with `auth.updateUser`, leaving email and ID read-only.
 - Added account creation date display, client-side name validation, accessible status messaging, and a Save Changes action that refreshes the server-rendered dashboard after success.
+- Ownership is enforced by using the browser Supabase client with the current authenticated session and calling `auth.updateUser`; the implementation accepts no user ID or privileged fields as update input. Code inspection confirms it cannot target another user's profile, roles, balances, deposits, ledger entries, or admin data.
+- Manual v0 preview testing verified successful save feedback, empty-name validation, persistence after refresh, and persistence after logout and login. This satisfies the profile persistence requirement; authenticated runtime ownership isolation was supported by code inspection rather than a multi-user penetration test.
+- Removed the misleading Profile Information `Coming soon` label while retaining the label on the still-deferred Security and Account Preferences sections.
 - Changed files: `components/dashboard/ProfileInformation.tsx`, `app/dashboard/settings/page.tsx`, `app/dashboard/dashboard.css`, and this checklist.
-- Validation: `npm run lint` passed with one pre-existing `@next/next/no-img-element` warning in `app/dashboard/deposits/DepositInterface.tsx`; `npx tsc --noEmit` passed; `npm run build` passed; unauthenticated access to `/dashboard/settings` redirected to `/login?next=/dashboard/settings` at the requested 538x890 viewport.
-- Remaining limitations: authenticated save, ownership behavior, success/error interaction, and refresh persistence could not be verified because no test credentials or test account were available. No database migration, environment variable, service-role key, deposit, Transactions, or admin-dashboard changes were made.
+- Validation: `npm run lint` passed with one pre-existing `@next/next/no-img-element` warning in `app/dashboard/deposits/DepositInterface.tsx`; `npx tsc --noEmit` passed; `npm run build` passed; unauthenticated access to `/dashboard/settings` redirected to `/login?next=/dashboard/settings` at the requested 538x890 viewport. Manual authenticated preview checks passed as noted above.
+- Remaining limitations: email changes, password changes, currency persistence/conversion, and account actions remain deferred to later phases. No database migration, environment variable, service-role key, deposit, Transactions, or admin-dashboard changes were made.
 
 Phase 4: Security
 
