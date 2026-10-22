@@ -17,7 +17,8 @@ export default function SecuritySettings({ email }: SecuritySettingsProps) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const currentPassword = String(form.get("currentPassword") ?? "");
     const newPassword = String(form.get("newPassword") ?? "");
     const confirmPassword = String(form.get("confirmPassword") ?? "");
@@ -57,7 +58,7 @@ export default function SecuritySettings({ email }: SecuritySettingsProps) {
       return;
     }
 
-    event.currentTarget.reset();
+    formElement.reset();
     setStatus("Password updated successfully.");
   }
 
