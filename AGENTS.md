@@ -141,13 +141,20 @@ Phase 3 Implementation Summary
 
 Phase 4: Security
 
-- [ ] Add a Change Password action using the existing Supabase Auth implementation.
-- [ ] Provide the required password fields according to the existing authentication flow.
-- [ ] Add a show/hide password control where password fields are displayed.
-- [ ] Provide a secure password-reset flow.
-- [ ] Move or expose the existing Sign Out action within the Settings Security section.
-- [ ] Preserve the existing logout behaviour and session handling.
+- [x] Add a Change Password action using the existing Supabase Auth implementation.
+- [x] Provide the required password fields according to the existing authentication flow.
+- [x] Add a show/hide password control where password fields are displayed.
+- [x] Provide a secure password-reset flow.
+- [x] Move or expose the existing Sign Out action within the Settings Security section.
+- [x] Preserve the existing logout behaviour and session handling.
 - [ ] Verify that password operations and sign-out work correctly.
+
+Phase 4 Implementation Summary
+
+- Added `components/dashboard/SecuritySettings.tsx` with current-password reauthentication through the authenticated user's email, password confirmation and minimum-length validation, show/hide controls, and `auth.updateUser({ password })` for the current session only. Password values are never stored in application data or metadata.
+- Reused the existing `/forgot-password` and `/reset-password` flow through a link, and reused `components/auth/SignOutButton.tsx` for logout and redirect behavior.
+- Updated `app/dashboard/settings/page.tsx` to render the Security section and added narrowly scoped responsive styles in `app/dashboard/dashboard.css`.
+- Validation and remaining issues: authenticated password-change and sign-out runtime verification require an authorized test account and are not claimed here. The existing reset flow was reused by code inspection. `npm run lint` passed with one pre-existing `@next/next/no-img-element` warning in `app/dashboard/deposits/DepositInterface.tsx`; `npx tsc --noEmit` passed; and `npm run build` passed. No schema, environment, deposit, Transactions, or admin-dashboard changes were made.
 
 Phase 5: Account Preferences — Display Currency
 

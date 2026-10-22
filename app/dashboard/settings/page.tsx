@@ -4,6 +4,7 @@ import DashboardShell from "@/components/dashboard/DashboardShell";
 import { getCurrentAdmin } from "@/lib/auth/admin";
 import { createClient } from "@/lib/supabase/server";
 import ProfileInformation from "@/components/dashboard/ProfileInformation";
+import SecuritySettings from "@/components/dashboard/SecuritySettings";
 
 export const instant = false;
 
@@ -50,8 +51,8 @@ export default async function SettingsPage() {
               createdAt={user.created_at ?? null}
             />
           </SettingSection>
-          <SettingSection title="Security" description="Password and session controls will be available here.">
-            <p className="settings-placeholder-copy">Security management is prepared for a future phase. Your existing authentication and sign-out behavior remain unchanged.</p>
+          <SettingSection title="Security" description="Manage your password and active session.">
+            <SecuritySettings email={user.email ?? ""} />
           </SettingSection>
           <SettingSection title="Account Preferences" description="Choose how supported account information will be displayed.">
             <div className="settings-preference-row"><span>Display currency</span><strong>USD — US Dollar</strong></div>
