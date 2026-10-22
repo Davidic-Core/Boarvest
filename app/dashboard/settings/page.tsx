@@ -42,7 +42,7 @@ export default async function SettingsPage() {
           <p>Manage your personal information and account security.</p>
         </header>
         <div className="settings-grid">
-          <SettingSection title="Profile Information" description="Review and update the personal information associated with your account.">
+          <SettingSection title="Profile Information" description="Review and update the personal information associated with your account." badge={null}>
             <ProfileInformation
               fullName={displayName ?? ""}
               email={user.email ?? ""}
